@@ -11,7 +11,7 @@ class Process():
 			p = air densirty
 			u = air speed
 		"""
-		return (0,5 * cp * np.multiply(density, np.power(speed, 3)))
+		return 0.5 * cp * np.multiply(density, np.power(speed, 3))[0]
 
 	def _energyWaves(self, Cp, p, u):
 		"""
@@ -19,7 +19,7 @@ class Process():
 			p = water densirty
 			u = waves speed
 		"""
-		return 0,5 * Cp * np.multiply(p,np.power(u,3))
+		return 0.5 * Cp * np.multiply(p,np.power(u,3))[0]
 
 	def dataProcess(self, speed, density, cp):
 		return self._energyWind(speed,density,cp)

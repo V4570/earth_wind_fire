@@ -62,7 +62,7 @@ def get_wind_data():
     c = np.array(temp)
 
     density = np.array(vec_func(c, mapping))
-
+    
     return (nullified_speed, density, CP, tmax, lons, lats)
 
 if __name__ == '__main__':
