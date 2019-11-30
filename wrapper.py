@@ -1,6 +1,9 @@
-#import Process
+from Process import Process
 import wind_speed as ws
 
 speed, density, cp = ws.get_wind_data()
 
-print(speed)
+p = Process()
+a = p.dataProcess(speed,density,cp)
+
+print(a)

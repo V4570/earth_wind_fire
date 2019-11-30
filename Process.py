@@ -1,26 +1,17 @@
 import numpy as np
 
 
-
-
-
 class Process():
 	def __init__(self):
 		print (" Do your magic things")
 
-	def dataProcess(self):
-
-
-		return None
-
-
-	def _energyWind(self, p, u):
-				"""
+	def _energyWind(self,speed, density, cp):
+		"""
 			Cp =
 			p = air densirty
 			u = air speed
 		"""
-		return(0,5*p*(u**3))
+		return (0,5*cp*density*(speed**3))
 
 	def _energyWaves(self, Cp, p, u):
 		"""
@@ -28,7 +19,10 @@ class Process():
 			p = water densirty
 			u = waves speed
 		"""
-		return 0,5*Cp*p*(u^3)
+		return (0,5*Cp*p*(u**3))
+
+	def dataProcess(self, speed, density, cp):
+		return self._energyWind(speed,density,cp)
 
 	def smthng(s):
 		min1=s[0][0]
