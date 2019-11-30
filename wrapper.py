@@ -5,8 +5,8 @@ import numpy as np
 speed, density, cp, time, lons, lats = ws.get_wind_data()
 
 p = Process()
-_, a = p.dataProcess(speed,density,cp)
+a = p.dataProcess(speed,density,cp)
 
-print(a.shape)
+#print(a.shape)
 
-#print(np.sum(a,axis = 3).shape)
+print(np.sum(a,axis = 0).shape)
