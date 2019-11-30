@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 
 
 
@@ -16,16 +16,16 @@ class Process():
 
 	def _energyWind(self, p, u):
 				"""
-			Cp = 
-			p = air densirty 
+			Cp =
+			p = air densirty
 			u = air speed
 		"""
-		return 0,5*p*(u^3)
+		return(0,5*p*(u**3))
 
 	def _energyWaves(self, Cp, p, u):
 		"""
-			Cp = 
-			p = water densirty 
+			Cp =
+			p = water densirty
 			u = waves speed
 		"""
 		return 0,5*Cp*p*(u^3)
