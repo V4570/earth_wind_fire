@@ -2,6 +2,33 @@ from netCDF4 import Dataset
 import numpy as np
 import math
 
+def find_density(t, mapping):
+    min_diff = 9999
+    tmp = 0
+    for m in mapping:
+        d = abs(t-m)
+        if d < min_diff:
+            tmp = m
+            min_diff = d
+    return mapping[tmp]
+
+
+mapping = {
+    -40: 1.514,
+    -35: 1.4843,
+    -30: 1.395,
+    -25: 1.4243,
+    -10: 1.399,
+    -5: 1.3178,
+    0: 1.269,
+    10: 1.247,
+    15: 1.225,
+    20: 1.204,
+    25: 1.184,
+    30: 1.165,
+    40: 1.127,
+    50: 1.109
+}
 
 fh = Dataset("cropped_wind.nc", "r", format="NETCDF4")
 
@@ -35,6 +62,11 @@ v10 = fh.variables['v10'][:]
 np_u10 = np.array(u10)**2
 np_v10 = np.array(v10)**2
 
+# density = mapping[min(mapping, key=lambda x:abs(x-temp))]
+
 speed = np.sqrt(np.add(np_u10, np_v10))
 
-print(temp)
+vec_func = np.vectorize(find_density)
+c = np.array(temp)
+
+density = vec_func(c, mapping)
