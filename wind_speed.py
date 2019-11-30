@@ -13,7 +13,10 @@ def find_density(t, mapping):
     return mapping[tmp]
 
 
-mapping = {
+def get_wind_data():
+    CP = 0.4
+
+    mapping = {
     -40: 1.514,
     -35: 1.4843,
     -30: 1.395,
@@ -28,51 +31,33 @@ mapping = {
     30: 1.165,
     40: 1.127,
     50: 1.109
-}
+    }
 
-fh = Dataset("cropped_wind.nc", "r", format="NETCDF4")
+    fh = Dataset("cropped_wind.nc", "r", format="NETCDF4")
 
-# latbounds = [35.01186, 41.50306]
-# lonbounds = [19.91975, 28.2225]
+    # latbounds = [35.01186, 41.50306]
+    # lonbounds = [19.91975, 28.2225]
 
-lons = fh.variables['longitude'][:]
-lats = fh.variables['latitude'][:]
+    lons = fh.variables['longitude'][:]
+    lats = fh.variables['latitude'][:]
 
-# latli = np.argmin(np.abs(lats - latbounds[0]))
-# latui = np.argmin(np.abs(lats - latbounds[1]))
+    tmax = fh.variables['time'][:]
+    tmax_units = fh.variables['time'].units
 
-# lonli = np.argmin(np.abs(lons - lonbounds[0]))
-# lonui = np.argmin(np.abs(lons - lonbounds[1]))
+    temp = fh.variables['t2m'][:] - 273.15
+    pressure = fh.variables['sp'][:]
 
-# print(latli,latui, lonli,lonui)
+    u10 = fh.variables['u10'][:]
+    v10 = fh.variables['v10'][:]
 
-tmax = fh.variables['time'][:]
+    np_u10 = np.array(u10)**2
+    np_v10 = np.array(v10)**2
 
-tmax_units = fh.variables['time'].units
+    speed = np.sqrt(np.add(np_u10, np_v10))
 
-# awh = fh.variables['awh'][:]
-# print(rootgrp.get_variables_by_attributes(standard_name='altimeter_wave_height'))
+    vec_func = np.vectorize(find_density)
+    c = np.array(temp)
 
-temp = fh.variables['t2m'][:] - 273.15
-pressure = fh.variables['sp'][:]
+    density = vec_func(c, mapping)
 
-u10 = fh.variables['u10'][:]
-v10 = fh.variables['v10'][:]
-
-np_u10 = np.array(u10)**2
-np_v10 = np.array(v10)**2
-
-# density = mapping[min(mapping, key=lambda x:abs(x-temp))]
-
-speed = np.sqrt(np.add(np_u10, np_v10))
-
-vec_func = np.vectorize(find_density)
-c = np.array(temp)
-
-density = vec_func(c, mapping)
-
-cp = 0.35
-
-efficiency = (cp * density * speed**3)/2
-
-print(efficiency)
+    return (speed, density, CP)
