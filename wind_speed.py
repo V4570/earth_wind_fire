@@ -70,3 +70,9 @@ vec_func = np.vectorize(find_density)
 c = np.array(temp)
 
 density = vec_func(c, mapping)
+
+cp = 0.35
+
+efficiency = (cp * density * speed**3)/2
+
+print(efficiency)
