@@ -24,7 +24,12 @@ class Process():
 
 
 	def dataProcess(self, speed, density, cp):
-		return self._energyWind(speed,density,cp)
+
+		energyPerHour = self._energyWind(speed,density,cp)
+
+		energyPerMonth = np.sum(energyPerHour, axis = 0)
+
+		return energyPerMonth
 
 	def smthng(s):
 		min1=s[0][0]
