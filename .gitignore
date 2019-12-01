@@ -3,3 +3,4 @@ cropped_wave2.nc
 wave.nc
 wave2.nc
 wind.nc
+*.pyc

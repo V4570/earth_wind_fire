@@ -8,8 +8,7 @@ c.retrieve(
         'product_type':'reanalysis',
         'format':'netcdf',
         'variable':[
-            '10m_u_component_of_wind','10m_v_component_of_wind','2m_temperature',
-            'surface_pressure'
+            '10m_u_component_of_wind','10m_v_component_of_wind','2m_temperature'
         ],
         'time':[
             '00:00','01:00','02:00',
@@ -42,4 +41,4 @@ c.retrieve(
         ],
         'year':'2018'
     },
-    'huge.nc')
+    'wind_large.nc')
