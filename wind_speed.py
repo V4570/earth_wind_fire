@@ -42,7 +42,6 @@ def get_wind_data():
 
     lons = fh.variables['longitude'][:]
     lats = fh.variables['latitude'][:]
-    import ipdb; ipdb.set_trace()
     tmax = fh.variables['time'][:]
     tmax_units = fh.variables['time'].units
 
@@ -58,6 +57,9 @@ def get_wind_data():
     speed = np.sqrt(np.add(np_u10, np_v10))
 
     nullified_speed = np.where([(speed > 3) & (speed < 25)], speed, 0)
+    #nullified_speed = np.where([(speed > 3) & (speed < 25)], speed, speed)
+
+    #import ipdb; ipdb.set_trace()
 
     vec_func = np.vectorize(find_density)
     c = np.array(temp)
