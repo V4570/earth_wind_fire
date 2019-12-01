@@ -13,6 +13,7 @@ def find_density(t, mapping):
     return mapping[tmp]
 
 
+
 def get_wind_data():
     CP = 0.4
 
@@ -55,9 +56,14 @@ def get_wind_data():
 
     speed = np.sqrt(np.add(np_u10, np_v10))
 
+    nullified_speed = np.where([(speed > 3) & (speed < 25)], speed, 0)
+
     vec_func = np.vectorize(find_density)
     c = np.array(temp)
 
-    density = vec_func(c, mapping)
+    density = np.array(vec_func(c, mapping))
+    
+    return (nullified_speed, density, CP, tmax, lons, lats)
 
-    return (speed, density, CP)
+if __name__ == '__main__':
+    get_wind_data()
