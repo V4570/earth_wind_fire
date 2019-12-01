@@ -7,7 +7,9 @@ from bokeh.models import (
     DataRange1d, PanTool, WheelZoomTool, BoxSelectTool
 )
 from bokeh.models.mappers import ColorMapper, LinearColorMapper
-from bokeh.palettes import Viridis5
+from bokeh.palettes import Viridis5, RdBu3, RdBu4
+from bokeh.plotting import gmap
+import numpy as np
 
 HOUSING_PATH = "datasets/"
 
@@ -22,9 +24,10 @@ def load_housing_data(housing_path=HOUSING_PATH):
 
 
 
-def vizualize(data, lons, lats):
-    map_options = GMapOptions(lat=39.0742, lng=21.8243, map_type="hybrid", zoom=6)
-   # import ipdb;ipdb.set_trace()
+def vizualize(data, lons, lats): 
+    coord = np.array(np.meshgrid(lons, lats)).T.reshape(-1,2)
+    map_options = GMapOptions(lat=39.0742, lng=20.8243, map_type="hybrid", zoom=6)
+    #import ipdb;ipdb.set_trace()
 
     plot = GMapPlot(
         x_range=Range1d(), y_range=Range1d(), map_options=map_options
@@ -37,23 +40,34 @@ def vizualize(data, lons, lats):
     #
     # Replace the value below with your personal API key:
     plot.api_key = " AIzaSyD99ZX7qJDs-VG_PN_3yRKE3Lw1BkPK-Go "
+    # source = ColumnDataSource(
+    # data=dict(lat=coord[:,1].tolist(),
+    #           lon=coord[:,0].tolist()
+    #           )
+    # )
+    # p = gmap("AIzaSyD99ZX7qJDs-VG_PN_3yRKE3Lw1BkPK-Go ", map_options, title="Austin")
+
+    # p.circle(x="lon", y="lat", size=15, fill_color='blue', fill_alpha=0.8, source=source)
+
+    data = data.reshape(-1,1)
+
 
     source = ColumnDataSource(
         data=dict(
-            lat=lats.tolist(),
-            lon=lons.tolist(),
-            size=data.tolist(),
-            color=data.tolist()
+            lat=coord[:,1].tolist(),
+            lon=coord[:,0].tolist(),
+            size=coord[:,1].tolist(),
+            color=np.divide(data,200).tolist() 
         )
     )
-    # max_median_house_value = data.loc[data['median_house_value'].idxmax()]['median_house_value']
-    # min_median_house_value = data.loc[data['median_house_value'].idxmin()]['median_house_value']
-
+    max_median_house_value = np.max(data)
+    min_median_house_value = np.min(data)
+    #import ipdb;ipdb.set_trace()
     #color_mapper = CategoricalColorMapper(factors=['hi', 'lo'], palette=[RdBu3[2], RdBu3[0]])
-    #color_mapper = LogColorMapper(palette="Viridis5", low=min_median_house_value, high=max_median_house_value)
-    color_mapper = LinearColorMapper(palette=Viridis5)
+    color_mapper = LogColorMapper(palette="Viridis5", low=min_median_house_value, high=max_median_house_value)
+    #color_mapper = LinearColorMapper(palette=RdBu4,low,high)
 
-    circle = Circle(x="lon", y="lat", size="size", fill_color={'field': 'color', 'transform': color_mapper}, fill_alpha=0.5, line_color=None )
+    circle = Circle(x="lon", y="lat", size="size", fill_color={'field': 'color', 'transform': color_mapper}, fill_alpha=0.2, line_color=None )
 
     plot.add_glyph(source, circle)
 

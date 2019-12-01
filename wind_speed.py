@@ -34,14 +34,15 @@ def get_wind_data():
     50: 1.109
     }
 
-    fh = Dataset("cropped_wind.nc", "r", format="NETCDF4")
+    fh = Dataset("./cropped_wind.nc", "r", format="NETCDF4")
+#    fh = Dataset("../PythonWorkplace/datasets/wind.nc", "r", format="NETCDF4")
 
     # latbounds = [35.01186, 41.50306]
     # lonbounds = [19.91975, 28.2225]
 
     lons = fh.variables['longitude'][:]
     lats = fh.variables['latitude'][:]
-
+    import ipdb; ipdb.set_trace()
     tmax = fh.variables['time'][:]
     tmax_units = fh.variables['time'].units
 

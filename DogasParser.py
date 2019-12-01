@@ -1,16 +1,52 @@
 import pandas as pd
 import shapely.wkt
+from shapely.geometry import mapping, Polygon
 import shapefile #PyShp
-import arcpy
-from arcpy import env
+import fiona
+#import arcpy
+#from arcpy import env
+#import ipdb; ipdb.set_trace()
 
-df=pd.read_csv('./Desktop/V_ZONES_APOKLEISMOU_GEO.csv')
+df=pd.read_csv('../PythonWorkplace/datasets/V_ZONES_APOKLEISMOU_GEO.csv')
 data=df.geometry
-Vec = shapely.wkt.loads(data)
-w = shapefile.Writer('./Desktop/test')
-w.record(Vec)
-w.close()
+
+Vec = []
+w = shapefile.Writer('../datasets/test')
 
 
-env.workspace = "c:/data"
-arcpy.FeatureToRaster_conversion("test.shp", "CLASS", "c:/output/roadsgrid", 25)
+
+for item in data:
+	lilVec = shapely.wkt.loads(item)
+	Vec.append(lilVec)
+
+# Define a polygon feature geometry with one attribute
+schema = {
+    'geometry': 'Polygon',
+    'properties': {'id': 'int'},
+}
+
+# Write a new Shapefile
+with fiona.open('my_shp2.shp', 'w', 'ESRI Shapefile', schema) as c:
+    ## If there are multiple geometries, put the "for" loop here
+    for id, poly in enumerate(Vec):
+	    c.write({
+	        'geometry': mapping(poly),
+	        'properties': {'id': id},
+	    })
+
+
+
+
+
+
+
+# for item in data:
+# 	lilVec = shapely.wkt.loads(item)
+# 	Vec.append(lilVec)
+# 	w.record(lilVec)
+
+# w.close()
+
+
+# env.workspace = "./data"
+# arcpy.FeatureToRaster_conversion("test.shp", "CLASS", "../datasets/output/roadsgrid", 25)

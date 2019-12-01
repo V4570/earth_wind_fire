@@ -9,5 +9,5 @@ p = Process()
 
 energyPerMonth = p.dataProcess(speed,density,cp)
 
-vz.vizualize(energyPerMonth, lons, lats)
+#vz.vizualize(energyPerMonth, lons, lats)
 
