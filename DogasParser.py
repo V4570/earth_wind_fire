@@ -6,19 +6,26 @@ import fiona
 from PIL import Image
 import numpy as np
 
-im = Image.open('../PythonWorkplace/datasets/rae_status-V_ZONES_APOKLEISMOU_GEO.tif')
-size = 128, 128
-import ipdb; ipdb.set_trace()
+def get_data():
+	im = Image.open('../PythonWorkplace/datasets/rae_status-V_ZONES_APOKLEISMOU_GEO.tif')
+	#import ipdb; ipdb.set_trace()
 
-im.thumbnail(size, Image.ANTIALIAS)
-imarray = np.array(im)
+
+	imarray = np.array(im)
+
+	mask = np.sum(imarray, axis = 2)
+
+	mask2 = np.where((mask.T != 0), 0, 1)
+
+
+	return mask2
 
 #import arcpy
 #from arcpy import env
-#import ipdb; ipdb.set_trace()
 
-df=pd.read_csv('../PythonWorkplace/datasets/V_ZONES_APOKLEISMOU_GEO.csv')
-data=df.geometry
+
+# df=pd.read_csv('../PythonWorkplace/datasets/V_ZONES_APOKLEISMOU_GEO.csv')
+# data=df.geometry
 
 
 # Vec = []
