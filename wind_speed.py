@@ -34,14 +34,14 @@ def get_wind_data():
     50: 1.109
     }
 
-    fh = Dataset("cropped_wind.nc", "r", format="NETCDF4")
+    fh = Dataset("./cropped_wind.nc", "r", format="NETCDF4")
+#    fh = Dataset("../PythonWorkplace/datasets/wind.nc", "r", format="NETCDF4")
 
     # latbounds = [35.01186, 41.50306]
     # lonbounds = [19.91975, 28.2225]
 
     lons = fh.variables['longitude'][:]
     lats = fh.variables['latitude'][:]
-
     tmax = fh.variables['time'][:]
     tmax_units = fh.variables['time'].units
 
@@ -57,6 +57,9 @@ def get_wind_data():
     speed = np.sqrt(np.add(np_u10, np_v10))
 
     nullified_speed = np.where([(speed > 3) & (speed < 25)], speed, 0)
+    #nullified_speed = np.where([(speed > 3) & (speed < 25)], speed, speed)
+
+    #import ipdb; ipdb.set_trace()
 
     vec_func = np.vectorize(find_density)
     c = np.array(temp)

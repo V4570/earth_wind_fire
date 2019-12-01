@@ -31,6 +31,10 @@ class Process():
 
 		return energyPerMonth
 
+	def applyMaks(self, data, mask):
+
+		return np.multiply(data,mask)
+
 	def smthng(s):
 	    min1=s[0][0]
 	    max1=s[0][0]
