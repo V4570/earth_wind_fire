@@ -1,6 +1,2 @@
-cropped_wave.nc
-cropped_wave2.nc
-wave.nc
-wave2.nc
-wind.nc
+*.nc
 *.pyc
